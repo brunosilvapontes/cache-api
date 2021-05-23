@@ -1,9 +1,11 @@
 const express = require('express')
 const router = express.Router()
+const getKeyDataController = require('../controllers/getKeyData')
 
 router.get('/key/:key', async (req, res) => {
   try {
-    return sendResponse({ data: 'success', res })
+    const { status, data } = await getKeyDataController(req.params.key)
+    return sendResponse({ data, res, status })
   } catch (err) {
     return sendResponse({
       res,
