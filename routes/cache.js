@@ -3,6 +3,7 @@ const router = express.Router()
 const getKeyDataController = require('../controllers/getKeyData')
 const getKeysController = require('../controllers/getKeys')
 const updateOrCreateKeyDataController = require('../controllers/updateOrCreateKeyData')
+const deleteKeyDataController =  require('../controllers/deleteKeyData')
 
 router.get('/key/:key', async (req, res) => {
   try {
@@ -43,6 +44,15 @@ router.put('/key/:key', async (req, res) => {
     const { status, data } = await updateOrCreateKeyDataController(
       req.params.key, keyValue
     )
+    return sendResponse({ data, res, status })
+  } catch (err) {
+    return handleUnexpectedError(res, err)
+  }
+})
+
+router.delete('/key/:key', async (req, res) => {
+  try {
+    const { status, data } = await deleteKeyDataController(req.params.key)
     return sendResponse({ data, res, status })
   } catch (err) {
     return handleUnexpectedError(res, err)

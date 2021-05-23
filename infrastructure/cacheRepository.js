@@ -13,7 +13,8 @@ const cacheMongoRepository = {
     { key },
     { $set: { key, value } },
     { upsert: true }
-  )
+  ),
+  deleteKeyDocument: async key => await getCollection().deleteOne({ key })
 }
 
 module.exports = cacheMongoRepository
