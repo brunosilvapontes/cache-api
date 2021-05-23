@@ -1,4 +1,5 @@
 const cacheRepository = require('../infrastructure/cacheRepository')
+const cacheCommon = require('../infrastructure/cache-common')
 
 const handler = async key => {
   const keyDocument = await cacheRepository.getKeyDocument(key)
@@ -11,6 +12,9 @@ const handler = async key => {
   console.log('Cache miss')
   const randomString = Math.random().toString(36).substring(7)
   await cacheRepository.insertDocument({key, value: randomString })
+
+  cacheCommon.handleCacheLimit()
+
   return { status: 201, data: randomString }
 }
 

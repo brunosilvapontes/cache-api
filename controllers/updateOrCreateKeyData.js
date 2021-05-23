@@ -1,13 +1,18 @@
 const cacheRepository = require('../infrastructure/cacheRepository')
+const cacheCommon = require('../infrastructure/cache-common')
 
 const handler = async (key, value) => {
   const keyDocument = await cacheRepository.createOrUpdateDocument(
     key, value
   )
 
+  const createdNewDoc = !!keyDocument.upsertedCount
+
+  if (createdNewDoc) cacheCommon.handleCacheLimit()
+
   return {
-    status: keyDocument.upsertedCount ? 201 :  200,
-    data: keyDocument.upsertedCount ? 'created' : 'updated'
+    status: createdNewDoc ? 201 :  200,
+    data: createdNewDoc ? 'created' : 'updated'
   }
 }
 

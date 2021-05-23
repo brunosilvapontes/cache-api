@@ -1,14 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const getKeyDataController = require('../controllers/getKeyData')
+const getOrCreateKeyDataController = require('../controllers/getOrCreateKeyData')
 const getKeysController = require('../controllers/getKeys')
 const updateOrCreateKeyDataController = require('../controllers/updateOrCreateKeyData')
-const deleteKeyDataController =  require('../controllers/deleteKeyData')
-const deleteKeysController =  require('../controllers/deleteKeys')
+const deleteKeyDataController = require('../controllers/deleteKeyData')
+const deleteKeysController = require('../controllers/deleteKeys')
 
 router.get('/key/:key', async (req, res) => {
   try {
-    const { status, data } = await getKeyDataController(req.params.key)
+    const { status, data } = await getOrCreateKeyDataController(req.params.key)
     return sendResponse({ data, res, status })
   } catch (err) {
     return handleUnexpectedError(res, err)
