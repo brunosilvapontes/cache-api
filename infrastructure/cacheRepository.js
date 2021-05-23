@@ -14,7 +14,8 @@ const cacheMongoRepository = {
     { $set: { key, value } },
     { upsert: true }
   ),
-  deleteKeyDocument: async key => await getCollection().deleteOne({ key })
+  deleteKeyDocument: async key => await getCollection().deleteOne({ key }),
+  deleteAllKeys: async () => await getCollection().deleteMany({})
 }
 
 module.exports = cacheMongoRepository
