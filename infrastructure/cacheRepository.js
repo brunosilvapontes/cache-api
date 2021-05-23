@@ -8,7 +8,12 @@ const cacheMongoRepository = {
   getKeys: async () => await getCollection().find(
     {},
     { projection : { key: true } }
-  ).toArray()
+  ).toArray(),
+  createOrUpdateDocument: async (key, value) => await getCollection().updateOne(
+    { key },
+    { $set: { key, value } },
+    { upsert: true }
+  )
 }
 
 module.exports = cacheMongoRepository
