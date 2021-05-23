@@ -3,7 +3,7 @@ const cacheCommon = require('../infrastructure/cache-common')
 
 const handler = async (key, value) => {
   const keyDocument = await cacheRepository.createOrUpdateDocument(
-    key, value
+    key, value, cacheCommon.getTTLEnd()
   )
 
   const createdNewDoc = !!keyDocument.upsertedCount

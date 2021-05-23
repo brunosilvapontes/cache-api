@@ -31,6 +31,16 @@ if (!process.env.CACHE_KEYS_LIMIT) {
   throw Error('CACHE_KEYS_LIMIT must be a positive number')
 }
 
+// Cache Time To Live
+if (!process.env.CACHE_KEYS_TTL_IN_SECONDS) {
+  // Default cache keys limit
+  process.env.CACHE_KEYS_TTL_IN_SECONDS = '60'
+} else if (isNaN(Number(process.env.CACHE_KEYS_TTL_IN_SECONDS))) {
+  throw Error('CACHE_KEYS_TTL_IN_SECONDS env var must be a valid number')
+} else if (Number(process.env.CACHE_KEYS_TTL_IN_SECONDS) < 1) {
+  throw Error('CACHE_KEYS_TTL_IN_SECONDS must be a positive number')
+}
+
 // MongoDB connection information
 const mongoUri = process.env.MONGODB_URI
 const mongoDatabase = process.env.MONGODB_DATABASE
@@ -42,6 +52,7 @@ const mongoOptions = {
 app.listen(3000, () => {
   console.log('Cache API running on port 3000')
   console.log(`Cache keys limit: ${process.env.CACHE_KEYS_LIMIT}`)
+  console.log(`Cache Time to Live keys: ${process.env.CACHE_KEYS_TTL_IN_SECONDS} seconds`)
   mongoUtil.connect(mongoUri, mongoDatabase, mongoOptions)
     .then(() => console.log('Connected to MongoDB'))
     .catch((err) => console.log('Error connecting to MongoDB: ', err))

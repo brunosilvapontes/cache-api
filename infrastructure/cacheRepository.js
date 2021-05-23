@@ -14,10 +14,17 @@ const cacheMongoRepository = {
     { projection : { key: true } }
   ).toArray(),
 
-  createOrUpdateDocument: async (key, value) => await getCollection()
+  createOrUpdateDocument: async (key, value, ttlEnd) => await getCollection()
     .updateOne(
       { key },
-      { $set: { key, value, createdOrUpdatedAt: new Date() } },
+      {
+        $set: {
+          key,
+          value,
+          createdOrUpdatedAt: new Date(),
+          ttlEnd
+        }
+      },
       { upsert: true }
     ),
 
@@ -34,7 +41,13 @@ const cacheMongoRepository = {
     .toArray(),
   
   deleteByIds: async ids => await getCollection()
-    .deleteMany({ _id: { $in: ids } })
+    .deleteMany({ _id: { $in: ids } }),
+
+  resetTTLById: async (id, newTTLEnd) => await getCollection()
+      .updateOne(
+        { _id: id },
+        { $set: { ttlEnd: newTTLEnd } }
+      )
 }
 
 module.exports = cacheMongoRepository
