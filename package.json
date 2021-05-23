@@ -4,13 +4,16 @@
   "description": "Playing with Node.js, Express, REST and MongoDB. It simulates a cache service.",
   "scripts": {
     "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "dependencies": {
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "mongodb": "^3.6.8",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
   },
   "repository": {
     "type": "git",
